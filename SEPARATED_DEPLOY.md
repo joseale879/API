@@ -2,9 +2,9 @@
 
 Este proyecto corre en 3 repos/capas independientes:
 
-- `proyecto-liquibase` (PostgreSQL + Liquibase)
-- `proyecto-backend` (Spring Boot API)
-- `proyecto-frontend` (React/Vite)
+- `proyecto-liquibase` [(PostgreSQL + Liquibase)](https://github.com/joseale879/proyecto-liquibase)
+- `proyecto-backend` (Spring Boot API)https://github.com/joseale879/proyecto-backend
+- `proyecto-frontend` (React/Vite)https://github.com/joseale879/proyecto-frontend
 
 Todos se conectan por la red Docker: `api_app-network`.
 
