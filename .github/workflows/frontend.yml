@@ -1,0 +1,46 @@
+name: Frontend CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+    paths:
+      - "proyecto-frontend/**"
+      - ".github/workflows/frontend.yml"
+  pull_request:
+    branches: [ "main", "master", "develop" ]
+    paths:
+      - "proyecto-frontend/**"
+      - ".github/workflows/frontend.yml"
+  workflow_dispatch:
+
+jobs:
+  frontend-build:
+    name: Frontend Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: proyecto-frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build frontend
+        run: npm run build
+
+  compose-validate:
+    name: Frontend Compose Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate frontend compose
+        run: docker compose -f proyecto-frontend/docker-compose.frontend.yml config

@@ -1,0 +1,45 @@
+name: Backend CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+    paths:
+      - "proyecto-backend/**"
+      - ".github/workflows/backend.yml"
+  pull_request:
+    branches: [ "main", "master", "develop" ]
+    paths:
+      - "proyecto-backend/**"
+      - ".github/workflows/backend.yml"
+  workflow_dispatch:
+
+jobs:
+  backend-build:
+    name: Backend Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: proyecto-backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Build backend (skip tests)
+        run: mvn -B clean package -DskipTests
+
+  compose-validate:
+    name: Backend Compose Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate backend compose
+        run: docker compose -f proyecto-backend/docker-compose.backend.yml config
